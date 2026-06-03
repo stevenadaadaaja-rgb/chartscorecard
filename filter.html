@@ -254,8 +254,9 @@
 
       if (data.ok) {
         t.style.color = '#fff'; t.textContent = 'Updated! Charts loading…';
-        // Broadcast ke semua chart HTML di domain yang sama
         bc.postMessage({ type: 'refresh' });
+        // Clear message after 12 seconds (10s delay + 2s buffer for fetch)
+        setTimeout(() => { t.textContent = ''; }, 12000);
       } else {
         t.style.color = '#ef4444'; t.textContent = `Error: ${data.feishu?.msg || data.error}`;
       }
