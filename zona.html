@@ -124,7 +124,6 @@ function getOrCreateChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       animation: { duration: 400 },
-      clip: false,
       layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
@@ -183,6 +182,7 @@ async function triggerRefresh(fromApply = false) {
     const chart = getOrCreateChart();
     chart.data.datasets = Object.entries(groups).map(([cat, pts]) => ({
       label: cat, data: pts,
+      clip: false,
       backgroundColor: CAT_COLORS[cat] || 'rgba(255,255,255,0.6)',
       borderColor: 'rgba(255,255,255,0.4)', borderWidth: 1,
     }));

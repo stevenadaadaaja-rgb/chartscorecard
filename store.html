@@ -126,7 +126,7 @@ function getOrCreateChart() {
     type: 'bubble', data: { datasets: [] },
     options: {
       responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
-      clip: false, layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
+      layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -197,7 +197,7 @@ function renderChart(rows) {
   });
   const chart = getOrCreateChart();
   chart.data.datasets = Object.entries(groups).map(([cat, pts]) => ({
-    label: cat, data: pts, backgroundColor: CAT_COLORS[cat] || '#fff', borderColor: 'rgba(255,255,255,0.4)', borderWidth: 1,
+    label: cat, data: pts, clip: false, backgroundColor: CAT_COLORS[cat] || '#fff', borderColor: 'rgba(255,255,255,0.4)', borderWidth: 1,
   }));
   chart.update();
   document.getElementById('chart').style.display = 'block';
