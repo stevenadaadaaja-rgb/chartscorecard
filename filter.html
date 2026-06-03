@@ -267,7 +267,33 @@
     }
   }
 
+  // Fetch current active dates from Feishu and display
+  async function fetchCurrentDates() {
+    const WORKER_URL = 'https://feishu-date-filter.stevenadaadaaja.workers.dev';
+    try {
+      const res = await fetch(`${WORKER_URL}/api/dates`);
+      const data = await res.json();
+      if (data.ok && data.start_date && data.end_date) {
+        // Parse dd/mm/yyyy back to ms for state
+        const parseDate = str => {
+          const [d, m, y] = str.split('/');
+          const dt = new Date(+y, +m-1, +d); dt.setHours(0,0,0,0);
+          return dt.getTime();
+        };
+        startMs = parseDate(data.start_date);
+        endMs   = parseDate(data.end_date);
+        // Navigate calendar to start date month
+        const s = new Date(startMs);
+        curY = s.getFullYear(); curM = s.getMonth();
+        renderStrip();
+        // Activate matching quick chip if applicable
+        document.getElementById('toast').textContent = '';
+      }
+    } catch(_) {}
+  }
+
   renderStrip();
+  fetchCurrentDates();
 </script>
 </body>
 </html>

@@ -280,6 +280,8 @@ async function triggerRefresh(fromApply = false) {
   } catch (err) { status.textContent = `Error: ${err.message}`; status.className = 'status error'; }
   finally { isLoading = false; btn.disabled = false; btn.classList.remove('loading'); overlay.classList.remove('show'); }
 }
+// Auto-load on open
+triggerRefresh();
 </script>
 </body>
 </html>

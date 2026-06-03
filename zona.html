@@ -39,12 +39,7 @@
 </head>
 <body>
 <header>
-  <div class="legend" style="flex:1;">
-  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>High Performance Leader</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Operational Strong but Low Sales</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Low Accountability</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Result Oriented but Weak Control</div>
-</div>
+  <div class="legend" id="legend" style="flex:1;"></div>
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
     <span id="dateRange" style="font-size:11px;color:rgba(255,255,255,0.85);font-family:'DM Mono',monospace;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.3);">— / —</span>
     <button class="btn-refresh" id="btnRefresh" onclick="triggerRefresh()">
@@ -247,6 +242,8 @@ async function triggerRefresh(fromApply = false) {
     isLoading = false; btn.disabled = false; btn.classList.remove('loading'); overlay.classList.remove('show');
   }
 }
+// Auto-load on open
+triggerRefresh();
 </script>
 </body>
 </html>
