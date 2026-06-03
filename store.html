@@ -197,6 +197,8 @@ function getOrCreateChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       animation: { duration: 400 },
+      clip: false,
+      layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -225,11 +227,18 @@ function getOrCreateChart() {
   return chartInstance;
 }
 
+const getText = v => {
+  if (!v) return '';
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) return v.map(i => i?.text ?? i).join(', ');
+  return v?.text ?? String(v);
+};
+
 function populateDropdowns(rows) {
   const currentZona = document.getElementById('zonaFilter').value;
   const currentAM   = document.getElementById('amFilter').value;
 
-  const zonas = [...new Set(rows.map(f => f['Zona']).filter(Boolean))].sort();
+  const zonas = [...new Set(rows.map(f => getText(f['Zona'])).filter(Boolean))].sort();
   const selZ  = document.getElementById('zonaFilter');
   selZ.innerHTML = '<option value="">All</option>';
   zonas.forEach(z => {
@@ -239,10 +248,9 @@ function populateDropdowns(rows) {
     selZ.appendChild(o);
   });
 
-  // AM dropdown depends on selected Zona
   const zona    = selZ.value;
-  const amRows  = zona ? rows.filter(f => f['Zona'] === zona) : rows;
-  const ams     = [...new Set(amRows.map(f => f['AM']).filter(Boolean))].sort();
+  const amRows  = zona ? rows.filter(f => getText(f['Zona']) === zona) : rows;
+  const ams     = [...new Set(amRows.map(f => getText(f['AM'])).filter(Boolean))].sort();
   const selAM   = document.getElementById('amFilter');
   selAM.innerHTML = '<option value="">All</option>';
   ams.forEach(a => {
@@ -254,11 +262,10 @@ function populateDropdowns(rows) {
 }
 
 function onZonaChange() {
-  // When zona changes, repopulate AM dropdown then re-render
   const zona = document.getElementById('zonaFilter').value;
   const ams  = [...new Set(
-    (zona ? allData.filter(f => f['Zona'] === zona) : allData)
-      .map(f => f['AM']).filter(Boolean)
+    (zona ? allData.filter(f => getText(f['Zona']) === zona) : allData)
+      .map(f => getText(f['AM'])).filter(Boolean)
   )].sort();
 
   const selAM = document.getElementById('amFilter');
@@ -268,7 +275,6 @@ function onZonaChange() {
     o.value = a; o.textContent = a;
     selAM.appendChild(o);
   });
-
   applyFilters();
 }
 
@@ -277,23 +283,23 @@ function applyFilters() {
   const zona = document.getElementById('zonaFilter').value;
   const am   = document.getElementById('amFilter').value;
   let filtered = allData;
-  if (zona) filtered = filtered.filter(f => f['Zona'] === zona);
-  if (am)   filtered = filtered.filter(f => f['AM']   === am);
+  if (zona) filtered = filtered.filter(f => getText(f['Zona']) === zona);
+  if (am)   filtered = filtered.filter(f => getText(f['AM'])   === am);
   renderChart(filtered);
 }
 
 function renderChart(rows) {
   const groups = {};
   rows.forEach(f => {
-    const cat   = f['Category'] || 'Unknown';
+    const cat   = getText(f['Category']) || 'Unknown';
     const x     = parseFloat(f['Total Score Business']);
     const y     = parseFloat(f['Total Score Leadership Responsiveness']);
-    const label = String(f['Store Name'] || '—');
-    const zona  = String(f['Zona'] || '—');
-    const am    = String(f['AM']   || '—');
+    const label = getText(f['Store Name']) || '—';
+    const zona  = getText(f['Zona'])       || '—';
+    const am    = getText(f['AM'])         || '—';
     if (isNaN(x) || isNaN(y)) return;
     if (!groups[cat]) groups[cat] = [];
-    groups[cat].push({ x, y, r: 18, label, category: cat, zona, am });
+    groups[cat].push({ x, y, r: 14, label, category: cat, zona, am });
   });
 
   const chart = getOrCreateChart();

@@ -271,6 +271,8 @@ function getOrCreateChart() {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 400 },
+      clip: false,
+      layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -344,16 +346,24 @@ async function triggerRefresh(fromApply = false) {
 
     const rows = json.data;
 
+    // Helper: Feishu Single Option returns { text, id } — extract text
+    const getText = v => {
+      if (!v) return '';
+      if (typeof v === 'string') return v;
+      if (Array.isArray(v)) return v.map(i => i?.text ?? i).join(', ');
+      return v?.text ?? String(v);
+    };
+
     // Group by category
     const groups = {};
     rows.forEach(f => {
-      const cat   = f['Category'] || 'Unknown';
+      const cat   = getText(f['Category']) || 'Unknown';
       const x     = parseFloat(f['Total Score Business Performance']);
       const y     = parseFloat(f['Total Score Leadership Responsiveness']);
-      const label = String(f['Zona'] || '—');
+      const label = getText(f['Zona']) || '—';
       if (isNaN(x) || isNaN(y)) return;
       if (!groups[cat]) groups[cat] = [];
-      groups[cat].push({ x, y, r: 18, label, category: cat });
+      groups[cat].push({ x, y, r: 14, label, category: cat });
     });
 
     const chart = getOrCreateChart();

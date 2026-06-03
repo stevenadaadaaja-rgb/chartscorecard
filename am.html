@@ -239,6 +239,8 @@ function getOrCreateChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       animation: { duration: 400 },
+      clip: false,
+      layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -267,7 +269,7 @@ function getOrCreateChart() {
 }
 
 function populateZonaDropdown(rows) {
-  const zonas = [...new Set(rows.map(f => f['Zona']).filter(Boolean))].sort();
+  const zonas = [...new Set(rows.map(f => getText(f['Zona'])).filter(Boolean))].sort();
   const sel = document.getElementById('zonaFilter');
   const current = sel.value;
   sel.innerHTML = '<option value="">All Zona</option>';
@@ -279,17 +281,24 @@ function populateZonaDropdown(rows) {
   });
 }
 
+const getText = v => {
+  if (!v) return '';
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) return v.map(i => i?.text ?? i).join(', ');
+  return v?.text ?? String(v);
+};
+
 function renderChart(rows) {
   const groups = {};
   rows.forEach(f => {
-    const cat   = f['Category'] || 'Unknown';
+    const cat   = getText(f['Category']) || 'Unknown';
     const x     = parseFloat(f['Total Score Business']);
     const y     = parseFloat(f['Total Score Leadership Responsiveness']);
-    const label = String(f['AM Name'] || '—');
-    const zona  = String(f['Zona'] || '—');
+    const label = getText(f['AM Name']) || '—';
+    const zona  = getText(f['Zona'])    || '—';
     if (isNaN(x) || isNaN(y)) return;
     if (!groups[cat]) groups[cat] = [];
-    groups[cat].push({ x, y, r: 18, label, category: cat, zona });
+    groups[cat].push({ x, y, r: 14, label, category: cat, zona });
   });
 
   const chart = getOrCreateChart();
@@ -307,7 +316,7 @@ function renderChart(rows) {
 function applyZonaFilter() {
   if (!allData.length) return;
   const zona = document.getElementById('zonaFilter').value;
-  const filtered = zona ? allData.filter(f => f['Zona'] === zona) : allData;
+  const filtered = zona ? allData.filter(f => getText(f['Zona']) === zona) : allData;
   renderChart(filtered);
 }
 
