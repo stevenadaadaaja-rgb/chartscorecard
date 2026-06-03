@@ -90,10 +90,11 @@ const quadrantPlugin = {
   beforeDraw(chart) {
     const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
     const mx = x.getPixelForValue(5), my = y.getPixelForValue(5);
-    [ { x: mx,   y: top,  w: right-mx,  h: my-top,    color: 'rgba(74,222,128,0.18)'  },
-      { x: left, y: top,  w: mx-left,   h: my-top,    color: 'rgba(96,165,250,0.18)'  },
-      { x: left, y: my,   w: mx-left,   h: bottom-my, color: 'rgba(248,113,113,0.18)' },
-      { x: mx,   y: my,   w: right-mx,  h: bottom-my, color: 'rgba(251,191,36,0.18)'  },
+    [ { x: left, y: top,  w: right-left, h: bottom-top, color: 'rgba(255,255,255,0.55)' },
+      { x: mx,   y: top,  w: right-mx,  h: my-top,    color: 'rgba(74,222,128,0.35)'  },
+      { x: left, y: top,  w: mx-left,   h: my-top,    color: 'rgba(96,165,250,0.35)'  },
+      { x: left, y: my,   w: mx-left,   h: bottom-my, color: 'rgba(248,113,113,0.35)' },
+      { x: mx,   y: my,   w: right-mx,  h: bottom-my, color: 'rgba(251,191,36,0.35)'  },
     ].forEach(q => { ctx.fillStyle = q.color; ctx.fillRect(q.x, q.y, q.w, q.h); });
     ctx.save();
     ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
