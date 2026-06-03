@@ -8,148 +8,51 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:      #EE7944;
-    --surface: rgba(0,0,0,0.12);
-    --border:  rgba(255,255,255,0.2);
-    --text:    #ffffff;
-    --muted:   rgba(255,255,255,0.65);
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 14px 16px 12px;
-    gap: 10px;
-  }
-
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
+  body { background: #EE7944; color: #fff; font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; padding: 14px 16px 12px; gap: 10px; }
+  header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   h1 { font-size: 13px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
-
-  .controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
+  .controls { display: flex; align-items: center; gap: 8px; }
   .filter-label { font-size: 11px; color: rgba(255,255,255,0.7); }
-
-  select {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.35);
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    outline: none;
-  }
-
+  select { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; outline: none; }
   select option { background: #c05a2a; color: #fff; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-  }
-
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.8); }
-  .legend-dot  { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-
-  .chart-wrap {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    position: relative;
-    min-height: 360px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.9); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .chart-wrap { flex: 1; background: rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 12px; position: relative; min-height: 360px; display: flex; align-items: center; justify-content: center; }
   canvas { width: 100% !important; }
-
   .empty-state { display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); }
-  .empty-state svg { opacity: 0.5; }
   .empty-state p { font-size: 13px; }
-
-  .spinner-overlay {
-    display: none;
-    position: absolute;
-    inset: 0;
-    background: rgba(238,121,68,0.6);
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-    backdrop-filter: blur(2px);
-  }
+  .spinner-overlay { display: none; position: absolute; inset: 0; background: rgba(238,121,68,0.7); border-radius: 10px; align-items: center; justify-content: center; flex-direction: column; gap: 10px; backdrop-filter: blur(2px); }
   .spinner-overlay.show { display: flex; }
-
   .spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
   .spinner-label { font-size: 12px; color: #fff; font-weight: 600; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
   .status { font-size: 10px; color: rgba(255,255,255,0.6); font-family: 'DM Mono', monospace; }
-  .status.error { color: #ffaaaa; }
-
-  .btn-refresh {
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 14px; border-radius: 7px;
-    border: 1px solid rgba(255,255,255,0.4);
-    background: rgba(255,255,255,0.15);
-    color: #fff; font-family: 'DM Sans', sans-serif;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    transition: background 0.15s;
-  }
+  .status.error { color: #ffcccc; }
+  .btn-refresh { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .btn-refresh:hover { background: rgba(255,255,255,0.25); }
   .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-refresh.loading svg { animation: spin 0.7s linear infinite; }
 </style>
 </head>
 <body>
-
 <header>
   <h1>AM · Leadership Accountability</h1>
   <div class="controls">
-    <span class="filter-label">Filter Zona:</span>
-    <select id="zonaFilter" onchange="applyZonaFilter()">
-      <option value="">All Zona</option>
-    </select>
+    <span class="filter-label">Zona:</span>
+    <select id="zonaFilter" onchange="applyFilter()"><option value="">All</option></select>
   </div>
 </header>
-
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.9)"></div>High Performance Leader</div>
-  <div class="legend-item"><div class="legend-dot" style="background:rgba(30,30,30,0.75);border:1px solid rgba(255,255,255,0.4)"></div>Operational Strong but Low Sales</div>
-  <div class="legend-item"><div class="legend-dot" style="background:rgba(180,40,40,0.85)"></div>Low Accountability</div>
-  <div class="legend-item"><div class="legend-dot" style="background:rgba(255,210,60,0.9)"></div>Result Oriented but Weak Control</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>High Performance Leader</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Operational Strong but Low Sales</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Low Accountability</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Result Oriented but Weak Control</div>
 </div>
-
-<div class="chart-wrap" id="chartWrap">
+<div class="chart-wrap">
   <div class="empty-state" id="emptyState">
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <p>No data loaded yet</p>
   </div>
   <canvas id="chart" style="display:none"></canvas>
@@ -158,52 +61,42 @@
     <span class="spinner-label">Loading data…</span>
   </div>
 </div>
-
 <footer>
   <span class="status" id="status">Apply a date filter or click Refresh</span>
   <button class="btn-refresh" id="btnRefresh" onclick="triggerRefresh()">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
-    </svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
     Refresh
   </button>
 </footer>
-
 <script>
 const WORKER_URL = 'https://feishu-date-filter.stevenadaadaaja.workers.dev';
-const DELAY_MS   = 10000;
-
-const CATEGORY_COLORS = {
-  'High Performance Leader':                     'rgba(255,255,255,0.9)',
-  'Operational Strong but Low Sales Performance':'rgba(30,30,30,0.75)',
-  'Low Accountability':                          'rgba(180,40,40,0.85)',
-  'Result Oriented but Weak Control':            'rgba(255,210,60,0.9)',
+const DELAY_MS = 10000;
+const CAT_COLORS = {
+  'High Performance Leader':                     '#4ade80',
+  'Operational Strong but Low Sales Performance':'#60a5fa',
+  'Low Accountability':                          '#f87171',
+  'Result Oriented but Weak Control':            '#fbbf24',
 };
-const DEFAULT_COLOR = 'rgba(255,255,255,0.5)';
 
 const bc = new BroadcastChannel('scorecard_refresh');
 bc.onmessage = e => { if (e.data?.type === 'refresh') triggerRefresh(true); };
 
-let allData = [];
-let chartInstance = null;
+let allData = [], chartInstance = null;
 
-// ── Quadrant + label plugins ──────────────────────────────────────────────
 const quadrantPlugin = {
   id: 'quadrants',
   beforeDraw(chart) {
     const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
     const mx = x.getPixelForValue(5), my = y.getPixelForValue(5);
-    [
-      { x: mx,   y: top,  w: right-mx,  h: my-top,    color: 'rgba(255,255,255,0.08)' },
-      { x: left, y: top,  w: mx-left,   h: my-top,    color: 'rgba(0,0,0,0.08)'       },
-      { x: left, y: my,   w: mx-left,   h: bottom-my, color: 'rgba(150,0,0,0.08)'     },
-      { x: mx,   y: my,   w: right-mx,  h: bottom-my, color: 'rgba(255,200,0,0.08)'   },
+    [ { x: mx,   y: top,  w: right-mx,  h: my-top,    color: 'rgba(74,222,128,0.18)'  },
+      { x: left, y: top,  w: mx-left,   h: my-top,    color: 'rgba(96,165,250,0.18)'  },
+      { x: left, y: my,   w: mx-left,   h: bottom-my, color: 'rgba(248,113,113,0.18)' },
+      { x: mx,   y: my,   w: right-mx,  h: bottom-my, color: 'rgba(251,191,36,0.18)'  },
     ].forEach(q => { ctx.fillStyle = q.color; ctx.fillRect(q.x, q.y, q.w, q.h); });
     ctx.save();
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
-    ctx.beginPath(); ctx.moveTo(mx, top);  ctx.lineTo(mx, bottom); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(left, my); ctx.lineTo(right, my);  ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(mx, top); ctx.lineTo(mx, bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(left, my); ctx.lineTo(right, my); ctx.stroke();
     ctx.restore();
   }
 };
@@ -211,18 +104,12 @@ const quadrantPlugin = {
 const bubbleLabelPlugin = {
   id: 'bubbleLabels',
   afterDatasetsDraw(chart) {
-    const { ctx } = chart;
     chart.data.datasets.forEach((ds, di) => {
-      const meta = chart.getDatasetMeta(di);
-      meta.data.forEach((el, i) => {
-        const pt = ds.data[i];
-        const isDark = ds.backgroundColor.includes('30,30,30');
-        ctx.save();
-        ctx.font = '600 9px DM Sans, sans-serif';
-        ctx.fillStyle = isDark ? '#fff' : 'rgba(0,0,0,0.75)';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(pt.label, el.x, el.y);
-        ctx.restore();
+      chart.getDatasetMeta(di).data.forEach((el, i) => {
+        const pt = ds.data[i]; const { ctx } = chart;
+        ctx.save(); ctx.font = 'bold 9px DM Sans, sans-serif';
+        ctx.fillStyle = 'rgba(0,0,0,0.75)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(pt.label, el.x, el.y); ctx.restore();
       });
     });
   }
@@ -234,17 +121,14 @@ function getOrCreateChart() {
   if (chartInstance) return chartInstance;
   const ctx = document.getElementById('chart').getContext('2d');
   chartInstance = new Chart(ctx, {
-    type: 'bubble',
-    data: { datasets: [] },
+    type: 'bubble', data: { datasets: [] },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: { duration: 400 },
-      clip: false,
-      layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
+      responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+      clip: false, layout: { padding: { top: 16, right: 20, bottom: 4, left: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(0,0,0,0.75)', borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1,
+          backgroundColor: 'rgba(0,0,0,0.8)', borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1,
           titleColor: '#fff', bodyColor: 'rgba(255,255,255,0.75)',
           titleFont: { family: 'DM Sans', size: 12, weight: '700' },
           bodyFont: { family: 'DM Mono', size: 11 }, padding: 10,
@@ -253,117 +137,68 @@ function getOrCreateChart() {
             label: item => [
               `Business  : ${Number(item.raw.x).toFixed(1)}`,
               `Leadership: ${Number(item.raw.y).toFixed(1)}`,
-              `Zona      : ${item.raw.zona || '—'}`,
-              `Category  : ${item.raw.category || '—'}`,
+              `Zona      : ${item.raw.zona}`,
+              `Category  : ${item.raw.category}`,
             ],
           }
         }
       },
       scales: {
-        x: { min:0, max:10, title:{display:true,text:'Total Score Business',color:'rgba(255,255,255,0.6)',font:{family:'DM Sans',size:10}}, grid:{color:'rgba(255,255,255,0.08)'}, ticks:{color:'rgba(255,255,255,0.6)',font:{family:'DM Mono',size:9},stepSize:2}, border:{color:'rgba(255,255,255,0.2)'} },
-        y: { min:0, max:10, title:{display:true,text:'Total Score Leadership Responsiveness',color:'rgba(255,255,255,0.6)',font:{family:'DM Sans',size:10}}, grid:{color:'rgba(255,255,255,0.08)'}, ticks:{color:'rgba(255,255,255,0.6)',font:{family:'DM Mono',size:9},stepSize:2}, border:{color:'rgba(255,255,255,0.2)'} }
+        x: { min:0, max:10, title:{display:true,text:'Total Score Business',color:'rgba(255,255,255,0.65)',font:{family:'DM Sans',size:10}}, grid:{color:'rgba(255,255,255,0.1)'}, ticks:{color:'rgba(255,255,255,0.65)',font:{family:'DM Mono',size:9},stepSize:2}, border:{color:'rgba(255,255,255,0.2)'} },
+        y: { min:0, max:10, title:{display:true,text:'Total Score Leadership Responsiveness',color:'rgba(255,255,255,0.65)',font:{family:'DM Sans',size:10}}, grid:{color:'rgba(255,255,255,0.1)'}, ticks:{color:'rgba(255,255,255,0.65)',font:{family:'DM Mono',size:9},stepSize:2}, border:{color:'rgba(255,255,255,0.2)'} }
       }
     }
   });
   return chartInstance;
 }
 
-function populateZonaDropdown(rows) {
-  const zonas = [...new Set(rows.map(f => getText(f['Zona'])).filter(Boolean))].sort();
+function populateZona(rows) {
+  const cur = document.getElementById('zonaFilter').value;
+  const zonas = [...new Set(rows.map(d => d.Zona).filter(Boolean))].sort();
   const sel = document.getElementById('zonaFilter');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">All Zona</option>';
-  zonas.forEach(z => {
-    const opt = document.createElement('option');
-    opt.value = z; opt.textContent = z;
-    if (z === current) opt.selected = true;
-    sel.appendChild(opt);
-  });
+  sel.innerHTML = '<option value="">All</option>';
+  zonas.forEach(z => { const o = document.createElement('option'); o.value = z; o.textContent = z; if (z === cur) o.selected = true; sel.appendChild(o); });
 }
-
-const getText = v => {
-  if (!v) return '';
-  if (typeof v === 'string') return v;
-  if (Array.isArray(v)) return v.map(i => i?.text ?? i).join(', ');
-  return v?.text ?? String(v);
-};
 
 function renderChart(rows) {
   const groups = {};
-  rows.forEach(f => {
-    const cat   = getText(f['Category']) || 'Unknown';
-    const x     = parseFloat(f['Total Score Business']);
-    const y     = parseFloat(f['Total Score Leadership Responsiveness']);
-    const label = getText(f['AM Name']) || '—';
-    const zona  = getText(f['Zona'])    || '—';
-    if (isNaN(x) || isNaN(y)) return;
+  rows.forEach(d => {
+    const cat = d.category || 'Unknown';
     if (!groups[cat]) groups[cat] = [];
-    groups[cat].push({ x, y, r: 14, label, category: cat, zona });
+    groups[cat].push({ x: d.x, y: d.y, r: 14, label: d.name || '—', category: cat, zona: d.Zona || '—' });
   });
-
   const chart = getOrCreateChart();
   chart.data.datasets = Object.entries(groups).map(([cat, pts]) => ({
-    label: cat, data: pts,
-    backgroundColor: CATEGORY_COLORS[cat] || DEFAULT_COLOR,
-    borderColor: 'rgba(255,255,255,0.3)', borderWidth: 1,
+    label: cat, data: pts, backgroundColor: CAT_COLORS[cat] || '#fff', borderColor: 'rgba(255,255,255,0.4)', borderWidth: 1,
   }));
   chart.update();
-
   document.getElementById('chart').style.display = 'block';
   document.getElementById('emptyState').style.display = 'none';
 }
 
-function applyZonaFilter() {
+function applyFilter() {
   if (!allData.length) return;
   const zona = document.getElementById('zonaFilter').value;
-  const filtered = zona ? allData.filter(f => getText(f['Zona']) === zona) : allData;
-  renderChart(filtered);
+  renderChart(zona ? allData.filter(d => d.Zona === zona) : allData);
 }
 
 let isLoading = false;
-
 async function triggerRefresh(fromApply = false) {
-  if (isLoading) return;
-  isLoading = true;
-
-  const btn     = document.getElementById('btnRefresh');
-  const status  = document.getElementById('status');
-  const overlay = document.getElementById('spinnerOverlay');
-
-  btn.disabled = true;
-  btn.classList.add('loading');
-  overlay.classList.add('show');
-  status.className = 'status';
-
-  if (fromApply) {
-    status.textContent = 'Waiting for Feishu to process…';
-    await new Promise(r => setTimeout(r, DELAY_MS));
-  } else {
-    status.textContent = 'Fetching data…';
-  }
-
+  if (isLoading) return; isLoading = true;
+  const btn = document.getElementById('btnRefresh'), status = document.getElementById('status'), overlay = document.getElementById('spinnerOverlay');
+  btn.disabled = true; btn.classList.add('loading'); overlay.classList.add('show'); status.className = 'status';
+  if (fromApply) { status.textContent = 'Waiting for Feishu to process…'; await new Promise(r => setTimeout(r, DELAY_MS)); }
+  else { status.textContent = 'Fetching data…'; }
   try {
-    const res  = await fetch(`${WORKER_URL}/api/am`);
+    const res = await fetch(`${WORKER_URL}/api/am`);
     const json = await res.json();
     if (!json.ok) throw new Error(json.error || 'Worker error');
-
     allData = json.data;
-    populateZonaDropdown(allData);
-
-    const zona = document.getElementById('zonaFilter').value;
-    const filtered = zona ? allData.filter(f => f['Zona'] === zona) : allData;
-    renderChart(filtered);
-
+    populateZona(allData);
+    applyFilter();
     status.textContent = `Updated ${new Date().toLocaleTimeString('id-ID')} · ${allData.length} records`;
-  } catch (err) {
-    status.textContent = `Error: ${err.message}`;
-    status.className = 'status error';
-  } finally {
-    isLoading = false;
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    overlay.classList.remove('show');
-  }
+  } catch (err) { status.textContent = `Error: ${err.message}`; status.className = 'status error'; }
+  finally { isLoading = false; btn.disabled = false; btn.classList.remove('loading'); overlay.classList.remove('show'); }
 }
 </script>
 </body>
