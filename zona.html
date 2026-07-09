@@ -101,7 +101,7 @@ const quadrantPlugin = {
   id: 'quadrants',
   beforeDraw(chart) {
     const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
-    const mx = x.getPixelForValue(5), my = y.getPixelForValue(5);
+    const mx = x.getPixelForValue(midX), my = y.getPixelForValue(midY);
     [ { x: left, y: top,  w: right-left, h: bottom-top, color: 'rgba(255,255,255,1.0)' },
       { x: mx,   y: top,  w: right-mx,  h: my-top,    color: 'rgba(74,222,128,0.25)'  },  // top-right: High Perf
       { x: left, y: top,  w: mx-left,   h: my-top,    color: 'rgba(96,165,250,0.25)'  },  // top-left: Operational
@@ -195,6 +195,10 @@ async function triggerRefresh(fromApply = false) {
     const res = await fetch(`${WORKER_URL}/api/zona`);
     const json = await res.json();
     if (!json.ok) throw new Error(json.error || 'Worker error');
+
+    // Update quadrant midpoints from baseline
+    midX = json.midX ?? 5;
+    midY = json.midY ?? 5;
 
     const groups = {};
     json.data.forEach(d => {
