@@ -232,7 +232,7 @@ async function triggerRefresh(fromApply = false) {
       legendEl.appendChild(item);
     });
 
-    status.textContent = `Updated ${new Date().toLocaleTimeString('id-ID')} · ${json.data.length} records`;
+    status.textContent = `Updated ${new Date().toLocaleTimeString('id-ID')} · ${json.data.length} records · midX=${json.midX ?? '?'} midY=${json.midY ?? '?'}`;
     // Fetch and display current date range
     try {
       const dr = await fetch(`${WORKER_URL}/api/dates`);
